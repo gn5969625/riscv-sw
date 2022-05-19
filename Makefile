@@ -33,6 +33,7 @@ RISCV_TOOL = riscv64-unknown-elf
 RISCV_GCC = $(RISCV_TOOL)-gcc
 RISCV_NM = $(RISCV_TOOL)-nm
 RISCV_OBJDUMP = $(RISCV_TOOL)-objdump
+RISCV_OBJCPY = $(RISCV_TOOL)-objcopy
 
 # gdb
 RISCV_GDB = gdb-multiarch
@@ -64,6 +65,7 @@ $(BUILD)/$(FIRMWARE).elf: $(SRC)
 	@$(RISCV_GCC) $(CFLAGS) -I$(INC) $^ -T scripts/layout.ld -o $@
 	@$(RISCV_NM) $@ > $(BUILD)/$(FIRMWARE).sections
 	@$(RISCV_OBJDUMP) -d $@ > $(BUILD)/$(FIRMWARE).disassembly
+	@$(RISCV_OBJCPY) -O ihex $(BUILD)/$(FIRMWARE).elf $(BUILD)/$(FIRMWARE).hex
 
 upload: $(BUILD)/$(FIRMWARE).elf
 	@sudo $(OPENOCD) -f $(OPENOC_CONFIG_FILE) -c "program $^ verify reset exit"
