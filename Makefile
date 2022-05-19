@@ -39,7 +39,7 @@ RISCV_OBJCPY = $(RISCV_TOOL)-objcopy
 RISCV_GDB = gdb-multiarch
 
 # compiler options
-CFLAGS = -march=rv32imac -mabi=ilp32 -Wall -O0 -nostdlib -nostartfiles -ffreestanding -ggdb
+CFLAGS = -march=rv32imac -mabi=ilp32 -Wall -O0 -nostdlib -nostartfiles -ffreestanding -ggdb -Wl,-Map,test.map
 
 # Firmware
 FIRMWARE = firmware
