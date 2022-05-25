@@ -31,7 +31,8 @@
 #define PERIOD      10000
 
 uint32_t volatile on_off = 0;
-//uint32_t cnt = 0;
+uint32_t cnt = 0;
+uint32_t cnt_max = 10;
 void toggle_led(void)
 {
     if (on_off) {
@@ -53,9 +54,8 @@ int main()
     uart_init(UART0);
 
     setup_led();
-    //while (cnt++ < 5)
-    printf("Hello, World! :)\n\r");
-    printf("Hello, World! :)\n\r");
+    while (cnt++ < cnt_max)
+        printf("Hello, World! :) Kevin\n\r");
 
     timer_setup(PERIOD, toggle_led);
     trap_setup();
