@@ -25,7 +25,31 @@
 # Execution starts from here
 .globl _start
 _start:
-    lui sp, 0x80004 # Load the SP with end of RAM
+    la sp, stack_top # Load the SP with end of RAM
+    /* Load data section */
+    la t0, _data_lma
+    la t1, _data
+    beq t0, t1, 2f
+    la t2, _edata
+    bgeu t1, t2, 2f
+1:
+    lw t3, 0(t0)
+    sw t3, 0(t1)
+    addi t0, t0, 4
+    addi t1, t1, 4
+    bltu t1, t2, 1b
+2:
+
+    /* Clear bss section */
+    la t1, _bss_start
+    la t2, _bss_end
+    bgeu t1, t2, 4f
+3:
+    sw   x0, 0(t1)
+    addi t1, t1, 4
+    blt  t1, t2, 3b
+4:
     jal main        # Jump to main()
 
-1:  j 1b            # Spin forever
+1:
+    j 1b            # Spin forever

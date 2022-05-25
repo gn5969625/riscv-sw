@@ -25,20 +25,35 @@
 
 MEMORY
 {
-    ROM : ORIGIN = 0x20010000, LENGTH = 0x1000
-    RAM : ORIGIN = 0x80000000, LENGTH = 0x4000
+    ROM (rx) : ORIGIN = 0x20010000, LENGTH = 0x1000
+    RAM (rwx) : ORIGIN = 0x80000000, LENGTH = 0x4000
 }
 
 SECTIONS
 {
     .text : { 
         *(.text*)
-    } > ROM
+    } > ROM AT > ROM
     .rodata : {
         *(.rodata*)
-    } > ROM
-    .bss : {
-        *(.bss*)
-    } > RAM
+    } > ROM AT > ROM
+    .data : ALIGN(4) {
+	*(.data)
+    } > RAM AT > ROM
+    .sdata : ALIGN(4) {
+	*(.sdata)
+    } > RAM AT > ROM
+    PROVIDE(_data = ADDR(.data));
+    PROVIDE(_data_lma = LOADADDR(.data));
+    PROVIDE( _edata = . );
+    PROVIDE( _bss_start = . );
+    .bss : ALIGN(4) {
+	  *(.sbss*)
+          *(.bss .bss.*)
+    } > RAM AT > RAM
+    PROVIDE( _end = . );
+    PROVIDE( _bss_end = . );
+    . += 0x1000;
+    stack_top = .;
 }
 
