@@ -43,6 +43,7 @@ void uart_init(uart_e uart) {
 
 void uart_putc(uart_e uart, char c) {
     volatile uart_s *u = uart ? __uart1 : __uart0;
+    while((int32_t) u->txdata < 0);
     u->txdata = c;
 }
 
