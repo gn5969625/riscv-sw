@@ -28,6 +28,12 @@ OPENOCD = openocd
 # openocd board config
 OPENOC_CONFIG_FILE = board/sifive-hifive1-revb.cfg
 
+# Firmware
+FIRMWARE = firmware
+
+# build/
+BUILD = build
+
 # gcc
 RISCV_TOOL = riscv64-unknown-elf
 RISCV_GCC = $(RISCV_TOOL)-gcc
@@ -39,13 +45,7 @@ RISCV_OBJCPY = $(RISCV_TOOL)-objcopy
 RISCV_GDB = gdb-multiarch
 
 # compiler options
-CFLAGS = -march=rv32imac -mabi=ilp32 -Wall -O0 -nostdlib -nostartfiles -ffreestanding -ggdb -Wl,-Map,test.map
-
-# Firmware
-FIRMWARE = firmware
-
-# build/
-BUILD = build
+CFLAGS = -march=rv32imac -mabi=ilp32 -Wall -O0 -nostdlib -nostartfiles -ffreestanding -ggdb -Wl,-Map,$(BUILD)/$(FIRMWARE).map
 
 # source Files
 INC = src/drv/include
